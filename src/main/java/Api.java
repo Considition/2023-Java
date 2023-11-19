@@ -97,11 +97,13 @@ public class Api {
     }
 
     public CompletableFuture<GameData> submitAsync(String mapName, SubmitSolution solution, String apiKey) throws JsonProcessingException, URISyntaxException {
+        String body = objectMapper.writeValueAsString(solution);
+        HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString(body);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(new URI(baseUrl + "/api/Game/submitSolution?mapName=" + mapName))
                 .header("x-api-key", apiKey)
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(solution)))
+                .POST(bodyPublisher)
                 .build();
 
         return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())

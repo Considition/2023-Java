@@ -4,6 +4,9 @@ import lombok.Data;
 
 @Data
 public class PlacedLocations {
+    private double longitud;
+    private double latitud;
+    private String locationType = "";
     private int freestyle9100Count = -1;
     private int freestyle3100Count = -1;
 

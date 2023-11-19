@@ -10,6 +10,7 @@ public class StoreLocationScoring {
     private double latitude;
     private double longitude;
     private double footfall;
+    private int footfallScale;
     private double salesVolume;
     private double salesCapacity;
     private double leasingCost;
