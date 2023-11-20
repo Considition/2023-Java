@@ -106,22 +106,44 @@ public class Scoring {
             gameDataScore.setTotalLeasingCost(gameDataScore.getTotalLeasingCost() + storeLocationScoring.getLeasingCost());
             gameDataScore.setTotalFreestyle3100Count(gameDataScore.getTotalFreestyle3100Count() + storeLocationScoring.getFreestyle3100Count());
             gameDataScore.setTotalFreestyle9100Count(gameDataScore.getTotalFreestyle9100Count() + storeLocationScoring.getFreestyle9100Count());
-            gameDataScore.getGameScore().setTotalFootfall(gameDataScore.getGameScore().getTotalFootfall() + storeLocationScoring.getFootfall());
+            gameDataScore.getGameScore().setTotalFootfall(gameDataScore.getGameScore().getTotalFootfall() + storeLocationScoring.getFootfall() / 1000);
         }
 
-        gameDataScore.setTotalRevenue(BigDecimal.valueOf(gameDataScore.getTotalRevenue()).setScale(0, RoundingMode.HALF_UP).doubleValue());
+        //Just some rounding for nice whole numbers
+        //scoredSolution.TotalRevenue = Math.Round(scoredSolution.TotalRevenue, 2);
+        gameDataScore.setTotalRevenue(BigDecimal.valueOf(gameDataScore.getTotalRevenue()).setScale(2, RoundingMode.HALF_UP).doubleValue());
 
-        double totalCo2Savings = gameDataScore.getGameScore().getKgCo2Savings()
+        //scoredSolution.GameScore.KgCo2Savings = Math.Round(scoredSolution.GameScore.KgCo2Savings, 2);
+        gameDataScore.getGameScore().setKgCo2Savings(BigDecimal.valueOf(gameDataScore.getGameScore().getKgCo2Savings()).setScale(2, RoundingMode.HALF_UP).doubleValue());
+
+        //scoredSolution.GameScore.TotalFootfall = Math.Round(scoredSolution.GameScore.TotalFootfall, 4);
+        gameDataScore.getGameScore().setTotalFootfall(BigDecimal.valueOf(gameDataScore.getGameScore().getTotalFootfall()).setScale(4, RoundingMode.HALF_UP).doubleValue());
+
+        //Calculate Earnings
+        //scoredSolution.GameScore.Earnings = (scoredSolution.TotalRevenue - scoredSolution.TotalLeasingCost) / 1000;
+        gameDataScore.getGameScore().setEarnings((gameDataScore.getTotalRevenue() - gameDataScore.getTotalLeasingCost()) / 1000);
+
+
+
+
+        //gameDataScore.setTotalRevenue(BigDecimal.valueOf(gameDataScore.getTotalRevenue()).setScale(0, RoundingMode.HALF_UP).doubleValue());
+
+        /*double totalCo2Savings = gameDataScore.getGameScore().getKgCo2Savings()
                 - gameDataScore.getTotalFreestyle3100Count() * generalData.getFreestyle3100Data().getStaticCo2() / 1000
-                - gameDataScore.getTotalFreestyle9100Count() * generalData.getFreestyle9100Data().getStaticCo2() / 1000;
+                - gameDataScore.getTotalFreestyle9100Count() * generalData.getFreestyle9100Data().getStaticCo2() / 1000;*/
 
-        gameDataScore.getGameScore().setKgCo2Savings(BigDecimal.valueOf(totalCo2Savings).setScale(0, RoundingMode.HALF_UP).doubleValue());
-        gameDataScore.getGameScore().setEarnings(gameDataScore.getTotalRevenue() - gameDataScore.getTotalLeasingCost());
+        //gameDataScore.getGameScore().setKgCo2Savings(BigDecimal.valueOf(totalCo2Savings).setScale(0, RoundingMode.HALF_UP).doubleValue());
 
+        //Calculate total score
+        /*scoredSolution.GameScore.Total = Math.Round(
+                (scoredSolution.GameScore.KgCo2Savings * generalData.Co2PricePerKiloInSek + scoredSolution.GameScore.Earnings) *
+                        (1 + scoredSolution.GameScore.TotalFootfall),
+                2
+        );*/
         double totalScore = (gameDataScore.getGameScore().getKgCo2Savings() * generalData.getCo2PricePerKiloInSek()
                 + gameDataScore.getGameScore().getEarnings()) * (1 + gameDataScore.getGameScore().getTotalFootfall());
 
-        gameDataScore.getGameScore().setTotal(BigDecimal.valueOf(totalScore).setScale(0, RoundingMode.HALF_UP).doubleValue());
+        gameDataScore.getGameScore().setTotal(BigDecimal.valueOf(totalScore).setScale(2, RoundingMode.HALF_UP).doubleValue());
 
         return gameDataScore;
     }
