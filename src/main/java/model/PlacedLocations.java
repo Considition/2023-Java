@@ -27,7 +27,7 @@ public class PlacedLocations {
     }
 
     public void setFreestyle3100Count(int freestyle3100Count) {
-        if (freestyle3100Count >= 0 && freestyle3100Count <= 5) {
+        if (freestyle3100Count >= 0 && freestyle3100Count <= 2) {
             this.freestyle3100Count = freestyle3100Count;
         } else {
             throw new IllegalArgumentException("Freestyle3100Count must be between 0 and 5.");
