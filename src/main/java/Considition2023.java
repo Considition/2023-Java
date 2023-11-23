@@ -61,8 +61,8 @@ public class Considition2023 {
         boolean isHardcore = Scoring.sandBoxMaps.contains(mapName.toLowerCase());
         if (isHardcore) {
             if (mapData.getHotspots() != null && !mapData.getHotspots().isEmpty()) {
-                Hotspot hotspot1 = mapData.getHotspots().get(0);
-                Hotspot hotspot2 = mapData.getHotspots().get(1);
+                Hotspot hotspot1 = mapData.getHotspots().get(1);
+                Hotspot hotspot2 = mapData.getHotspots().get(2);
                 PlacedLocations placedLocations = new PlacedLocations();
                 placedLocations.setFreestyle3100Count(0);
                 placedLocations.setFreestyle9100Count(1);
